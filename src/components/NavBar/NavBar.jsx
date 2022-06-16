@@ -1,89 +1,66 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import SVG_S from '../../utils/SVG/SVG_S';
-const NavBar = ()=>{
-    let links = [
-        {name:"home",link:"/"},
-        {name: "about", link: "/about"},
-        {name: "projects", link: "/projects"}
-    ];
+import logo from '../../logo.svg';
+const navigation = [
+  {name:"home",link:"#"},
+  {name:"about",link:"#"},
+  {name:"projects",link:"#"},
+  {name:"contact",link:"#"},
+]
 
-    const [isOpen, setIsOpen] = useState(false);
-    
-    return (
-        <nav className="shadow-md w-full ">
-            <div className="md:flex item-center justify-between py-4 md:px-10 px-7">
-                <div className="border border-white rounded w-[100px] md:w-[100px]">
-                    <SVG_S/>
-                {/* <img src = {S} width={100} height={100} color={"red"} alt={"SABBIR'S HOME"} /> */}
+
+const NavBar = () => {
+  const [open, setOpen] = useState (0);
+
+  return (
+    <>
+              <nav className="flex items-center justify-between p-6 md:p-10  lg:justify-between" aria-label="Global">
+                  <div className="flex items-center justify-between w-full md:w-auto">
+                    <Link to="#">
+                      <img
+                        alt="SABBIR'S HOME"
+                        className="h-8 w-auto sm:h-10"
+                        src={logo}
+                      />
+                    </Link>
+                  </div>
+                  {/* menu items */}
+                <div className="hidden flex-col md:block md:ml-10 md:pr-4 md:space-x-8">
+                  {navigation.map((item) => (
+                    <Link key={item.name} to={item.link} className="font-medium text-gray-500 hover:text-gray-900 uppercase">
+                      {item.name}
+                    </Link>
+                  ))}
                 </div>
-                <div className='text-3xl absolute right-[4rem] top-[4.5rem] border border-white rounded text-[#ff4949] '>
-                <svg className={`${!isOpen?"block":"hidden"} md:hidden h-10 w-10 `} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" onClick={()=>setIsOpen(!isOpen)}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-
-                <svg className={`${isOpen?"block":"hidden"} md:hidden  h-10 w-10`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" onClick={()=>setIsOpen(!isOpen)}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg> 
 
 
-                </div>
-                <ul className={` md:flex md:items-center transition-all duration-500  ease-in ${isOpen?"block":"hidden"}`}>
-                    {
-                        links.map((item,index)=>(
-                            <li key={item.name} className="md:ml-8 text-2xl uppercase text-center border border-white rounded md:my-0 my-7 md:tracking-[4px]">
-                                <Link to={item.link} className=" text-[#FF4949] hover:text-[#ECB365] duration-500 md:p-16 ">{item.name}</Link>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </div>
-            </nav>
-    )
+
+                    {/* mobile menu buttons */}
+
+                    <div className={`${!open?"hidden":""} w-full h-full absolute top-0 left-0 flex items-center justify-center flex-col bg-[#000] md:hidden md:ml-10 md:pr-4 md:space-x-8`}>
+                        {navigation.map((item) => (
+                          <Link key={item.name} to={item.link} className="font-medium text-[#fff] align-baseline p-5  hover:text-gray-900 uppercase">
+                            {item.name}
+                          </Link>
+                        ))}
+                      </div>
+
+                    <div className={`${open?"hidden":"z-10"} transition duration-700 -mr-2 flex-col items-center md:hidden`} onClick={()=>setOpen(!open)}>
+                      {
+                        [1,2,3].map((num,index)=>(
+                          <div key={index} className=' w-8 h-1 bg-primary-50 m-2'></div>
+                          ))
+                      }
+                    </div>
+                    <div className={` ${!open?"hidden":"z-10"} transition duration-700 -mr-2 relative items-center md:hidden`} onClick={()=>setOpen(!open)}>
+                        <div className='  absolute right-0 w-8 h-1 bg-primary-50 m-2 -rotate-45'></div>
+                        <div className=' w-8 h-1 bg-primary-50 m-2 rotate-45'></div>
+                    </div>
+
+
+              </nav>
+    </>
+  )
 }
 
-export default NavBar;
-
-
-
-
-
-{/* <div className="logo">
-<Link className="inline-block rounded border border-white  m-5" to="/">
-<img src = {S} width={100} height={100} color={"red"} />
-</Link>
-</div>
-<ul className=' hidden md:list-style-none md:flex justify-between w-150 h-full  uppercase text-18 '>
-{
-    nav_manus.map((item,index)=>{
-        return (
-            <li  className="text-[#FF4949] ">
-            <Link className="inline-block   hover:text-[#ECB365] transition-all  border  hover:border animate-none p-5  tracking-[4px]  w-auto items-center h-[70px]  border-white  rounded hover:animate-bounce m-2" to="/" >{item}</Link>
-        </li>
-        );
-    })
-}
-</ul>
-<svg class="block md:hidden h-10 w-10 text-[#ff4949] border border-white rounded" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" onClick={()=>setIsOpen(!isOpen)}>
-<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-</svg>
-
-{
-    isOpen && (
-        <ul className='list-style-none justify-between w-150 h-full  uppercase text-18 '>
-        {
-            nav_manus.map((item,index)=>{
-                return (
-                    <li  className="text-[#FF4949] ">
-                    <Link className="inline-block   hover:text-[#ECB365] transition-all  border  hover:border animate-none p-5  tracking-[4px]  w-auto items-center h-[70px]  border-white  rounded hover:animate-bounce m-2" to="/" >{item}</Link>
-                </li>
-                );
-            })
-        }
-    </ul>
-    )
-}
-
-<svg class="hidden  h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-</svg> */}
+export default NavBar
